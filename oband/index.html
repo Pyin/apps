@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en" ng-app="obandtest">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <link rel="stylesheet" href="js/lib/css/onsenui.css">  
+        <link rel="stylesheet" href="js/lib/css/topcoat-mobile-onsen-ios7.css">  
+   
+   		<script type="text/javascript" src="http://115.29.149.19:3000/framework/org.underscorejs.underscore/underscore.js"></script>
+		<script type="text/javascript" src="http://115.29.149.19:3000/framework/org.bcsphere.bluetooth/bluetoothapi.js"></script>
+		<script type="text/javascript" src="http://115.29.149.19:3000/framework/org.bcsphere/bc.js"></script>
+		<script type="text/javascript" charset="utf-8" src="obandservice.js"></script>
+		<script type="text/javascript" charset="utf-8" src="obandprofile.js"></script>
+
+        <script src="js/lib/angular/angular.js"></script>
+        <script src="js/lib/angular/angular-route.js"></script>
+        <script src="js/lib/angular/angular-resource.js"></script>
+        <script src="js/lib/angular/angular-touch.js"></script>
+        <script src="js/lib/onsenui.js"></script> 
+        <script src="js/app.js"></script>
+        <script src="js/controllers.js"></script>
+        <title>obandtest</title>
+        <style type="text/css">
+            *{
+                margin: 0;
+                padding: 0;
+            }
+
+            span{
+                display: block;
+                height:25px;
+                line-height: 25px;
+            }
+
+            .scanSwitch{
+                height: 60px;
+                line-height: 50px;
+            }
+            .device_list{
+                display: block;
+                top:50px;
+            }
+        </style>
+    </head>
+    <body>
+        <ons-screen>
+            <ons-navigator title="OBandTest">
+                <div ng-view></div>
+            </ons-navigator>
+        </ons-screen>
+    </body>
+</html>

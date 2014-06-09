@@ -1,0 +1,63 @@
+<ons-page class="left">  
+	<div class="center">
+		<div ng-show="connect_button_show">
+			<ons-button  type="cta" ng-click="connect()" style="display: block; width: 100%;">
+			     Connect This OBand
+			</ons-button>
+		</div>
+		<div ng-show="disconnect_button_show">
+			<ons-button  type="cta" ng-click="disconnect()" style="display: block; width: 100%;">
+			     Disconnect This OBand
+			</ons-button>
+		</div>
+		
+        <ons-button 
+            type="cta-large" 
+            ng-click="get_device_info()"
+            style="display: block; width: 100%;margin-top: 15px;float:right;">
+            get_device_info
+        </ons-button>
+        <ons-button 
+            type="cta-large" 
+            ng-click="set_user_info()"
+            style="display: block; width: 100%;margin-top: 8px;float:right;">
+            set_user_info
+        </ons-button>
+        
+	    <ons-button 
+	         type="cta-large" 
+	         ng-click="set_parameter()"
+	         style="display: block; width: 100%; margin-top: 8px;float:left;">
+	         set_parameter
+	    </ons-button>
+
+	    <ons-button 
+	         type="cta-large" 
+	         ng-click="get_sport_data()"
+	         style="display: block; width: 100%; margin-top: 8px;float:left;">
+	         get_sport_data
+	    </ons-button>
+	     
+	    <ons-button 
+	         type="cta-large" 
+	         ng-click="set_time()"
+	         style="display: block; width: 100%; margin-top: 8px;float:left;">
+	         set_time
+	     </ons-button>
+	     
+	    <ons-button 
+	         type="cta-large" 
+	         ng-click="format_device()"
+	         style="display: block; width: 100%; margin-top: 8px;float:left;">
+	         format_device
+	    </ons-button>
+	    
+	    <ons-button 
+	         type="cta-large" 
+	         ng-click="get_sport_daily_recoder()"
+	         style="display: block; width: 100%; margin-top: 8px;float:left;">
+	         get_sport_daily_recoder
+	    </ons-button>
+
+	</div>
+</ons-page>

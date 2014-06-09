@@ -1,0 +1,13 @@
+CACHE MANIFEST
+
+cordova_plugins.js
+css/index.css
+css/jquery.mobile.min.css
+js/index.js
+js/jquery.mobile.min.js
+js/jquery-1.7.1.min.js
+char_detail.html
+desc_list.html
+device_detail.html
+operate_char.html
+plugins/org.bcsphere.bluetooth/www/bluetooth.js

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<link rel="stylesheet" href="css/bootstrap.css" />
+		<link rel="stylesheet" type="text/css" href="css/bcstyle.css"/>
+		<script type="text/javascript" src="http://115.29.149.19:3000/framework/org.underscorejs.underscore/underscore.js"></script>
+		<script type="text/javascript" src="http://115.29.149.19:3000/framework/org.bcsphere.bluetooth/bluetoothapi.js"></script>
+		<script type="text/javascript" src="http://115.29.149.19:3000/framework/org.bcsphere/bc.js"></script>
+		<script type="text/javascript" src="http://115.29.149.19:3000/framework/org.bluetooth.service/immediate_alert.js"></script>
+		<script type="text/javascript" src="http://115.29.149.19:3000/framework/org.bluetooth.service/tx_power.js"></script>
+		<script type="text/javascript" src="http://115.29.149.19:3000/framework/org.bluetooth.service/link_loss.js"></script>
+		<script type="text/javascript" src="http://115.29.149.19:3000/framework/org.bluetooth.profile/proximity.js"></script>
+		<script type="text/javascript" src="http://115.29.149.19:3000/framework/org.bluetooth.profile/find_me.js"></script>
+		
+		<script type="text/javascript" src="http://115.29.149.19:3000/framework/org.apache.cordova.dialogs/notification.js"></script>
+		<script type="text/javascript" src="http://115.29.149.19:3000/framework/org.apache.cordova.dialogs/android/notification.js"></script>
+		
+		<script src="js/jquery-1.7.1.min.js"></script>
+		<script src="js/bootstrap.js"></script>
+		<script src="js/index.js"></script>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+	</head>
+
+	<body>
+		<div class="container">
+			<div class="header"> 
+				<h1><div id="service_deviceName">Find Me</div></h1>
+			</div>
+			
+			<div class="content">
+				<div class="findme_word">
+					<div style="height:35px;"></div>
+					<h1>O-Click</h1>
+				</div>
+				<div class="findme_pic">
+					<div class="arrow_down">
+						<img src="img/arrow_down1.png" class="img-responsive"/>
+						<img src="img/arrow_down2.png" class="img-responsive"/>
+						<img src="img/arrow_down3.png" class="img-responsive"/>
+					</div>
+					<div class="center_btn">
+						<div class="find_btn">
+							<div class="img-responsive img_border">
+								<img id="doevent" src="img/find.png" onclick='app.findMe()' class="img-responsive circle center_img"/>
+							</div>
+						</div>
+					</div>
+					<div class="arrow_up" style="clear:both;">
+						<img src="img/arrow_up3.png" class="img-responsive"/>
+						<img src="img/arrow_up2.png" class="img-responsive"/>
+						<img src="img/arrow_up1.png" class="img-responsive"/>
+					</div>
+				</div>
+			</div>
+		</div>
+	<script>
+		$(function(){
+			app.initialize();
+		})
+	</script>
+	</body>
+</html>
