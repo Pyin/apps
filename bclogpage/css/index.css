@@ -1,0 +1,20 @@
+div,p{
+	margin: 0;
+	padding: 0;
+}
+body{
+	background-color: black;
+}
+div{
+	width: 100%;
+	overflow: auto;
+	position: relative;
+}
+p{
+	display: block;
+	width: 100%;
+	color: #fff;
+	position: absolute;
+	top: 0;
+
+}

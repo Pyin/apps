@@ -2,37 +2,41 @@
 <html ng-app="bcsphere">
     <head>
         <meta charset="utf-8" />
-        <title></title>
         <meta name="format-detection" content="telephone=no" />
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
         
         <link rel="stylesheet" type="text/css" href="css/reset.css" />
         <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
         <link rel="stylesheet" type="text/css" href="css/index.css" />
-        
-        <style type="text/css">
-        #slide_wrapper li img{
-        	margin: 0 auto;
-        }
-        </style>
     </head>
     <body ng-controller="DeviceListCtrl">
         <div class="container" >
             <div class="header">
             	<div id="search_icon" class="search_icon" ng-click='switchScan()'>
             		<span id="search"><img src="img/search.png" class="img-responsive" id='switchScan'/></span>
-            		<!-- <i class="fa fa-search fa-3x"></i> -->
             	</div>
             	<div class="title">
             		<span><p>My Devices</p></span>
             	</div>
             	<div class="settings">
-            		<span><img src="img/settings.png" class="img-responsive" /></span>
-            		<!-- <i class="fa fa-cog fa-3x"></i> -->
+            		<span><img src="img/settings.png" class="img-responsive" ng-click="showDebug()" /></span>
             	</div>
             </div>
+
+            <div  class="content0" id="content0">
+                <div id="slide">
+                    <span class="slide_wrapper"><img src="img/center2.png"></span>
+                </div>
+                <div id="text">
+                    <p>there is no device</p>
+                </div>
+                <div id="arrow_up"></div>
+                <div class="navi">
+                    <span id= "navi"></span>
+                </div>
+            </div>
             
-            <div class="content">
+            <div class="content" id="content">
                 <div class="slide_box">
                 	<ul id="slide_wrapper" >
                 		<li  ng-repeat='webApp in webApps' ng-class="{'active':$index == n}" ngdelete>
@@ -58,16 +62,19 @@
                 		</li>
                 	</ul>
                 </div>
-                
             </div>
-        </div>
-        
+            
+        </div> 
+                     
+        <div id="interference"><p><span>0</span> new devices<img src=""></p></div>
+
         <script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
         <script type="text/javascript" src="js/bootstrap.js"></script>
         <script type="text/javascript" src="js/main.js"></script>
 		<script type="text/javascript" src="../../framework/org.underscorejs.underscore/underscore.js"></script>
 		<script type="text/javascript" src="../../framework/org.bcsphere.bluetooth/bluetoothapi.js"></script>
 		<script type="text/javascript" src="../../framework/org.bcsphere/bc.js"></script>
+		<script type="text/javascript" src="../../framework/org.bcsphere.bclog/bclog.js"></script>
 		<script type="text/javascript" src="../../framework/org.bcsphere.cordova.utilities/bcutility.js"></script>
         <script type="text/javascript" src="js/lib/angular/angular.js"></script>
 	    <script type="text/javascript" src="js/lib/angular/angular-route.js"></script>

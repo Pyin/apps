@@ -1,20 +1,23 @@
 'use strict';
 
-var bccoredevControllers = angular.module('bcsphereControllers',[]);
+var bcsphereControllers = angular.module('bcsphereControllers',[]);
 
-var WebApp = function(device,mapurl,data,bigImageUrl,smallImageUrl,background){
+var WebApp = function(device,mapurl,data,bigImageUrl,smallImageUrl,isBackground){
 	this.device = device;
 	this.mapurl = mapurl;
 	this.data = data;
 	this.bigImageUrl = bigImageUrl;
 	this.smallImageUrl = smallImageUrl;
+	this.isBackground = isBackground;
 };
 
 document.addEventListener('deviceready',function(){
 	var BC = window.BC = cordova.require("org.bcsphere.bcjs");
+	var BCLog = window.BCLog = cordova.require("org.bcsphere.bclog");
+	var BCutilities = window.BCutilities = cordova.require("org.bcsphere.cordova.utilities");
 },false);
 
-bccoredevControllers.controller('DeviceListCtrl',["$scope",'$location','$http',function($scope,$location,$http){
+bcsphereControllers.controller('DeviceListCtrl',["$scope",'$location','$http',function($scope,$location,$http){
 
 	$scope.webApps = [];
 	$scope.connectedApps = {};
@@ -41,21 +44,15 @@ bccoredevControllers.controller('DeviceListCtrl',["$scope",'$location','$http',f
 				alert("Your bluetooth closed!");
 				if(API !== "ios"){
 					BC.Bluetooth.OpenBluetooth(function(){
-
 					});
 				}
 			}
 		});
-
+		angular.element('#interference span').text('0');
+		$scope.addConnectedDevice();
 		$scope.startScan();
-		BC.bluetooth.addEventListener("newdevice",$scope.addNewDevice);	
-		if(localStorage.getItem('connectedApps')!= undefined && localStorage.getItem('connectedApps')!=null){
-			$scope.connectedApps = JSON.parse(localStorage.getItem('connectedApps'));
-			for(var key in $scope.connectedApps){
-				$scope.webApps.push($scope.connectedApps[key]);
-				BC.Tools.FireDocumentEvent("deviceAdd",$scope.connectedApps[key]);
-			}
-		}
+		BC.bluetooth.addEventListener("newdevice",$scope.addNewDevice);
+		$scope.moveLeft();
 	},false);
 
 	document.addEventListener("deviceAdd",function(s){
@@ -88,7 +85,7 @@ bccoredevControllers.controller('DeviceListCtrl',["$scope",'$location','$http',f
         }
      	
      	if(!$scope.connectedApps[mapurl]){
-     		newWebApp = new WebApp(newDevice,mapurl,{"url":""},bigImageUrl,smallImageUrl,true);
+     		newWebApp = new WebApp(newDevice,mapurl,{"url":""},bigImageUrl,smallImageUrl,'true');
 	        $scope.webApps.push(newWebApp);
 	        BC.Tools.FireDocumentEvent("deviceAdd",newWebApp);
      	}   
@@ -102,6 +99,9 @@ bccoredevControllers.controller('DeviceListCtrl',["$scope",'$location','$http',f
 
     $scope.startScan = function(){
     	$scope.searchInterval = setInterval($scope.run,1);
+    	if($scope.webApps.length<=0){
+    		$scope.addConnectedDevice();
+    	}
 		BC.Bluetooth.StartScan();
 		$scope.scaning = true;
     }
@@ -114,6 +114,19 @@ bccoredevControllers.controller('DeviceListCtrl',["$scope",'$location','$http',f
 		}
 	};
 
+	$scope.showDebug = function(){
+		var data = {};
+		data.url = 'bclog';
+		data.deviceName = 'log';
+		data.isBackground = 'true';
+		data.deviceAddress = "1000";
+		data.deviceType = "bclog";
+		BCutilities.redirectToApp(function(){
+        },function(message){
+            alert("Redirect App error!");
+        },data);
+	};
+
 	$scope.run = function(){
 		$scope.degrees++;
 		if($scope.degrees==360){
@@ -122,14 +135,61 @@ bccoredevControllers.controller('DeviceListCtrl',["$scope",'$location','$http',f
 		angular.element('#search').css({"-webkit-transform":"rotateZ("+($scope.degrees)+"deg)"});
 	};
 
-	setInterval(function(){$scope.$apply();},100);
-
-	moveInterval=setInterval(function(){
-		var lastNavi = angular.element("#slide_wrapper").children().length-1;
-		var currentNavi = angular.element("#slide_wrapper").children(".active").index();
-
-		if(currentNavi < lastNavi){
-			slide.moveLeft();  
+	setInterval(function(){
+		var webAppCount = $scope.webApps.length;
+		if(webAppCount==0){
+			angular.element('#content0').removeClass('hide').addClass('show');
+			angular.element('#content').removeClass('show').addClass('hide');
+		}else{
+			angular.element('#content0').removeClass('show').addClass('hide');
+			angular.element('#content').removeClass('hide').addClass('show');
 		}
+
+		var currentIndex = angular.element('#slide_wrapper').children('active').index();
+		if(deviceIndex == -1){
+			deviceIndex = 0; 
+		}
+		if(webAppCount == -1){
+			webAppCount = 0;
+		}
+		var newDeviceNumber = webAppCount - deviceIndex;
+		if(currentIndex<(webAppCount-1) && moveInterval == null && newDeviceNumber!==0){
+			angular.element('#interference').removeClass('hide').addClass('show');
+			angular.element('#interference span').text(newDeviceNumber);
+		}else{
+			angular.element('#interference').removeClass('show').addClass('hide');
+		}
+		$scope.$apply();
+
 	},100);
+
+	$scope.addConnectedDevice = function(){
+		if(localStorage.getItem('connectedApps')!= undefined && localStorage.getItem('connectedApps')!=null){
+			$scope.connectedApps = JSON.parse(localStorage.getItem('connectedApps'));
+			for(var key in $scope.connectedApps){
+				$scope.webApps.push($scope.connectedApps[key]);
+				BC.Tools.FireDocumentEvent("deviceAdd",$scope.connectedApps[key]);
+			}
+		}
+	} 
+
+	angular.element('#interference').bind('click',function(){
+		var webAppCount = $scope.webApps.length;
+		deviceIndex = webAppCount;
+		angular.element(this).removeClass('show').addClass('hide');
+		for(var i =0 ;i<=webAppCount-n;i++){
+			slide.moveLeft();
+		}
+	});
+
+	$scope.moveLeft = function(){
+		moveInterval=setInterval(function(){
+			var lastNavi = angular.element("#slide_wrapper").children().length-1;
+			var currentNavi = angular.element("#slide_wrapper").children(".active").index();
+
+			if(currentNavi < lastNavi){
+				slide.moveLeft();  
+			}
+		},100);
+	}
 }]);

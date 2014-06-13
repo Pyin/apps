@@ -8,7 +8,9 @@ document.addEventListener('deviceready',function(){
 });
 
 obandtestControllers.controller('DeviceListCtrl',["$scope",'$location',function($scope,$location){
+	
 	$scope.switchOBandScanItem = false;
+	
 	if(typeof(BC) != 'undefined' && BC.bluetooth){
 		$scope.devices = BC.bluetooth.devices;
 	}else{
@@ -72,26 +74,62 @@ obandtestControllers.controller('OBandOperationCtrl',['$scope','$location','$rou
 	}
 	$scope.get_device_info = function(){
 		oBandProfile.getDeviceInfo(oband,function(data){
-			alert("getdata!!");
-			alert(data.getHexString());
+			alert(JSON.stringify(data));
 		});
 	}
 	$scope.set_user_info = function(){
-		oband.set_user_info();
+		oBandProfile.setUserInfo(oband,
+		{
+			"gender":0,
+			"age":25,
+			"height":177,
+			"weight":60,
+			"user_id":"12345678"
+		},function(data){
+			alert(JSON.stringify(data));
+		});
 	}
 	$scope.set_parameter = function(){
-		oband.set_parameter();
+		oBandProfile.setParameter(oband,
+		{
+			"sport_target":5432, //step
+			"long_sit_alert_interval":64, // minute
+			"long_sit_start_time":60, // second
+			"sport_alert_target":64, // minute
+			"sport_alert_start_time":60, //second
+			"alarm1_time":30, //second
+			"alarm1_day":[2,4],//1-7
+			"alarm2_time":30, //second
+			"alarm2_day":[2,4,6],//1-7
+			"alarm3_time":30, //second
+			"alarm3_day":[7],//1-7
+		},function(data){
+			alert(data.getHexString());
+		});
 	}	
 	$scope.get_sport_data = function(){
-		oband.get_sport_data();
+		oBandProfile.getSportData(oband,function(data){
+			alert(data.getHexString());
+		});
 	}
 	$scope.set_time = function(){
-		oband.set_time();
+		var time = parseInt(Date.parse(new Date())/1000);
+		oBandProfile.setTime(oband,
+		{
+			"ref_time":time,
+			"week":2,//1-7
+		},function(data){
+			alert(data.getHexString());
+		});
 	}
 	$scope.format_device = function(){
-		oband.format_device();
+		oBandProfile.formatDevice(oband,function(data){
+			alert(JSON.stringify(data));
+		});
 	}
 	$scope.get_sport_daily_recoder = function(){
-		oband.get_sport_daily_recoder();
+		oBandProfile.getSportDailyRecoder(oband,function(data){
+			alert(data.getHexString());
+		});
 	}
 }]);

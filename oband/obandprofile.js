@@ -6,12 +6,14 @@ document.addEventListener('deviceready',function(){
 		
 		var obandServiceUUID = "fee7";
 		
+		var obandService = null;
+		
 		var OBandProfile = BC.OBandProfile = BC.Profile.extend({
-
+			
 			oBandInit : function(device,success,error){
 				device.discoverServices(function(){
-					var service = device.getServiceByUUID(obandServiceUUID)[0];
-					service.init(success,error);
+					obandService = device.getServiceByUUID(obandServiceUUID)[0];
+					obandService.init(success,error);
 				},function(){
 					alert("OBand discoverServices error!");
 					error();
@@ -19,41 +21,64 @@ document.addEventListener('deviceready',function(){
 			},
 			
 			getDeviceInfo : function(device,callback){
-				if(device.isConnected){
-					device.discoverServices(function(){
-						var service = device.getServiceByUUID(obandServiceUUID)[0];
-						service.getDeviceInfo(callback);
-					},function(){
-						alert("OBand discoverServices error!");
-						error();
-					});
+				if(device.isConnected && obandService){
+					obandService.getDeviceInfo(callback);
+				}else{
+					alert("please connect your OBand first!");
+				}
+			},
+			
+			getSportDailyRecoder : function(device,callback){
+				if(device.isConnected && obandService){
+					obandService.getSportDailyRecoder(callback);
 				}else{
 					alert("please connect your OBand first!");
 				}
 			},
 				
-			setUserInfo : function(device,callback){
-				alert("set_user_info");
-			},
-				
-			setParameter : function(device,callback){
-				alert("set_parameter");
-			},
-						
 			getSportData : function(device,callback){
-				alert("get_sport_data");
+				
+				obandService.getDeviceInfo(function(data){
+					var left = data.record_left
+				});
+				
+				if(device.isConnected && obandService){
+					obandService.getSportData(callback);
+				}else{
+					alert("please connect your OBand first!");
+				}
+			},
+			
+			setUserInfo : function(device,arg,callback){
+				if(device.isConnected && obandService){
+					obandService.setUserInfo(arg,callback);
+				}else{
+					alert("please connect your OBand first!");
+				}
+			},
+
+			setParameter : function(device,arg,callback){	
+				if(device.isConnected && obandService){
+					obandService.setParameter(arg,callback);
+				}else{
+					alert("please connect your OBand first!");
+				}
 			},
 						
-			setTime : function(device,callback){
-				alert("set_time");
+			setTime : function(device,arg,callback){
+				if(device.isConnected && obandService){
+					obandService.setTime(arg,callback);
+				}else{
+					alert("please connect your OBand first!");
+				}
 			},
 						
 			formatDevice : function(device,callback){
-				alert("format_device");
-			},
-						
-			getSportDailyRecoder : function(device,callback){
-				alert("get_sport_daily_recoder");
+				if(device.isConnected && obandService){
+					obandService.formatDevice(callback);
+				}else{
+					alert("please connect your OBand first!");
+				}
 			},
 				
 		});

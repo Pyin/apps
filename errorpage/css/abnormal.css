@@ -1,0 +1,76 @@
+@media only screen and (min-width: 721px) and (max-width: 1080px) {
+    body{
+    	font-size: 3.6em;
+    }
+}
+@media only screen and (min-width: 361px) and (max-width: 720px) {
+     body{
+    	font-size: 2.3em;
+    }
+}
+@media only screen and (max-width: 360px){
+    body{
+    	font-size: 1.2em;
+    }
+}
+body{
+	background-color: #ebebeb;
+}
+*,div,span,h4,p{
+	margin: 0;
+	padding: 0;
+}
+.header{
+	width: 100%;
+	color: #fff;
+	font-size: 1.2em;
+	background-color: #222;
+	text-align: center;
+}
+.header div{
+	float: left;
+}
+.header .return, .header .settings{
+	width: 15%;
+}
+.header .title{
+	width: 70%;
+}
+.header span{
+	width: 60%;
+}
+.header img{
+	width: 100%；
+}
+.mobile{
+	width: 40%;
+	margin: 0 auto;
+}
+.mobile img{
+	width: 100%;
+}
+.text_box{
+	text-align: center;
+}
+.text_box h4{
+	color: #333;
+	font-size: 1.2em;
+	line-height: 2em;
+}
+.text_box p{
+	color: #a2a2a2;
+	font-size: 1em;
+	line-height: 1.5em;
+}
+.btn span{
+	display: block;
+	color: #2c2c2c;
+	margin: 0 auto;
+	border-radius: 10%;
+	text-align: center;
+	background-color: #dadada;
+}
+.retry{
+	font-size: 1.2em;
+	color: #111;
+}

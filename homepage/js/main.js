@@ -1,73 +1,72 @@
 windowWidth = window.screen.availWidth;
 windowHeight = window.screen.availHeight;
-var n = 0;
 var moveInterval = null;
+var deviceIndex = 0;
+var n = 0;
 
+document.getElementById('slide').style.marginTop = (windowHeight-windowWidth)*0.4 + "px";
+document.getElementById('navi').style.width = (windowWidth*1/9) + "px";
+document.getElementById('navi').style.height = (windowWidth*1/9) + "px";
+document.getElementById('navi').style.marginTop = windowHeight*0.02 + "px";
+document.getElementById('text').style.marginTop = windowHeight*0.05 + "px";
+document.getElementById('text').style.height = windowHeight*0.13 + "px";
 $(function(){
     var slide_wrapper = document.getElementById('slide_wrapper');
     var navi_wrapper = document.getElementById('navi_wrapper');
-    var startx = null;
+    var startx = 0;
     slide_wrapper.addEventListener('touchstart',function(event){
+    	clearInterval(moveInterval);
+    	//$('#interference').addClass('show');
+    	moveInterval= null;
+    	deviceIndex = $(slide_wrapper).children('li').length;
     	var myDate = new Date();
     	secs = myDate.getMilliseconds();
-    	// mils = myDate.getMilliseconds();
-    	clearInterval(moveInterval);
-    	startx = 0
         startx = event.touches[0].pageX;
     });
-    document.getElementById('slide_wrapper').addEventListener('touchmove',function(event){
-     movex = event.touches[0].pageX;
-     slide_wrapper.style.left = (-((windowWidth*0.65)*n) + windowWidth*0.1 + (movex-startx)) + "px";
-     $("#text_wrapper").css({'opacity':0.2})
+    slide_wrapper.addEventListener('touchmove',function(event){
+    	movex = event.touches[0].pageX;
+    	slide_wrapper.style.left = (-((windowWidth*0.65)*n) + windowWidth*0.1 + (movex-startx)) + "px";
+    	$("#text_wrapper").css({'opacity':0.2});
     });
-    var sw_li = document.getElementById('slide_wrapper').getElementsByTagName('li');
+    var sw_li = slide_wrapper.getElementsByTagName('li');
     slide_wrapper.addEventListener('touchend',function(event){
     	var myDate = new Date();
     	sece = myDate.getMilliseconds();
-    	// mile = myDate.getMilliseconds();
-
+        
         endx = event.changedTouches[0].pageX;
-    
         var deltax = endx - startx;
+
         if(sece<=secs){
         	sece = sece + 1000
         }
-
     	var v = deltax / (sece - secs)
-
+    	
     	if((-2.5<=v)&&(v<=2.5)){
 	    	if((Math.abs( deltax ) < 0.20*windowWidth) && (Math.abs( deltax ) > -0.20*windowWidth)) {
 	        	$("#text_wrapper").animate({opacity:1});
 	            $("#slide_wrapper").animate({
 	        	 	left: (-((windowWidth*0.65)*n) + windowWidth*0.1)
 	        	 },20);
-	        }
-	        else if(((-(windowWidth*0.65*n) + deltax) >= windowWidth*0.1 )&&(n==0)){
-	        	$("#text_wrapper").animate({opacity:1});
-	        	 $("#slide_wrapper").animate({
-	        	 	left: (-((windowWidth*0.65)*n) + windowWidth*0.1)
-	        	 },300);
-	        }
-	        else if((-windowWidth*0.65*n + deltax)<(-windowWidth*0.65*(sw_li.length-1))&&(n==(sw_li.length-1))){
+	        }else if(((-(windowWidth*0.65*n) + deltax) >= windowWidth*0.1 )&&(n==0)){
 	        	$("#text_wrapper").animate({opacity:1});
 	        	$("#slide_wrapper").animate({
 	        	 	left: (-((windowWidth*0.65)*n) + windowWidth*0.1)
-	        	 },300);
-	        }
-	        else{
+	        	},300);
+	        }else if((-windowWidth*0.65*n + deltax)<(-windowWidth*0.65*(sw_li.length-1))&&(n==(sw_li.length-1))){
+	        	$("#text_wrapper").animate({opacity:1});
+	        	$("#slide_wrapper").animate({
+	        	 	left: (-((windowWidth*0.65)*n) + windowWidth*0.1)
+	        	},300);
+	        }else{
 	            if ( deltax > 0 ) {
-	                //move right
 	                slide.moveRight();
-	                
 	            }else{
-	                //move left
 	                slide.moveLeft();
 	            }
 	        }
-    	}
-        else{
+    	}else{
         	if(v<0){
-        		v = Math.round(v) + 2
+        		v = Math.round(v) + 1;
         		$("#slide_wrapper").children("li:eq("+n+")").removeClass("active")
 				$("#text_wrapper").children("li:eq("+n+")").removeClass("active")
 				$("#navi_wrapper").children("li:eq("+n+")").removeClass("active")
@@ -76,22 +75,21 @@ $(function(){
 				}
 				$("#slide_wrapper").animate({
 					left: -((windowWidth*0.65)*(n-v))+windowWidth*0.1
-				},-300*v);
+				},-300*(v+0.5));
 				$("#text_wrapper").css({
 					'left': -windowWidth*(n-v)
 				}).animate({
 					opacity:1
-				},-300*v);
+				},-300*(v+0.5));
 				$("#navi_wrapper").animate({
 					left: -windowWidth*5/36*(n-v) + windowWidth*(5/12)
-				},-300*v);
+				},-300*(v+0.5));
 				n = n - v;
 				$("#slide_wrapper").children("li:eq("+n+")").addClass("active")
 				$("#text_wrapper").children("li:eq("+n+")").addClass("active")
 				$("#navi_wrapper").children("li:eq("+n+")").addClass("active")
-        	}
-        	else{
-        		v = Math.round(v) - 2
+        	}else{
+        		v = Math.round(v) - 1
         		$("#slide_wrapper").children("li:eq("+n+")").removeClass("active")
 				$("#text_wrapper").children("li:eq("+n+")").removeClass("active")
 				$("#navi_wrapper").children("li:eq("+n+")").removeClass("active")
@@ -100,33 +98,38 @@ $(function(){
 				}
 				$("#slide_wrapper").animate({
 					left: -((windowWidth*0.65)*(n-v))+windowWidth*0.1
-				},300*v);
+				},300*(v-0.5));
 				$("#text_wrapper").css({
 					'left': -windowWidth*(n-v)
 				}).animate({
 					opacity:1
-				},300*v);
+				},300*(v-0.5));
 				$("#navi_wrapper").animate({
 					left: -windowWidth*5/36*(n-v) + windowWidth*(5/12)
-				},300*v);
+				},300*(v-0.5));
 				n = n - v;
 				$("#slide_wrapper").children("li:eq("+n+")").addClass("active")
 				$("#text_wrapper").children("li:eq("+n+")").addClass("active")
 				$("#navi_wrapper").children("li:eq("+n+")").addClass("active")
         	}
         }
+        if($(this).children('active').index()==$(this).children('li').length-1){
+        	$('#interference').addClass('hide');
+        }
     });
     
     navi_wrapper.addEventListener('touchstart',function(event){
     	clearInterval(moveInterval);
-        startx = 0
+    	//$('#interference').addClass('show');
+    	moveInterval= null;
+    	deviceIndex = $(slide_wrapper).children('li').length;
         startx = event.touches[0].pageX;
     });
     navi_wrapper.addEventListener('touchmove',function(event){
-     movex = event.touches[0].pageX;
-     $("#text_wrapper").css({'opacity':0.2})
-     navi_wrapper.style.left = (-windowWidth*5/36*n + windowWidth*(5/12) + (movex-startx)) + "px";
-     slide_wrapper.style.left = ((windowWidth*0.65)*(-n+((movex-startx)/(windowWidth*5/36))) - windowWidth*0.1) + "px";
+	    movex = event.touches[0].pageX;
+	    $("#text_wrapper").css({'opacity':0.2})
+	    navi_wrapper.style.left = (-windowWidth*5/36*n + windowWidth*(5/12) + (movex-startx)) + "px";
+	    slide_wrapper.style.left = ((windowWidth*0.65)*(-n+((movex-startx)/(windowWidth*5/36))) - windowWidth*0.1) + "px";
     });
     var nw_li = document.getElementById('navi_wrapper').getElementsByTagName('li');
     navi_wrapper.addEventListener('touchend',function(event){
@@ -270,6 +273,10 @@ var slide = {
 		$(".title").css({"width":windowWidth*(5/7)});
 		$(".settings").css({"width":windowWidth*(1/7)});
 		
+		// $(".text").css({"height":windowHeight*0.13,"margin-top":windowHeight*0.05});
+		// $(".navi").css({"height":windowHeight*0.16,,"margin-top":windowHeight*0.02});
+		// $(".navi_wrapper").css({"width":windowWidth*(1/9),"height":windowWidth*(1/9)});
+
 		$(".content").css("height",windowHeight*0.90);
 		$(".slide_box").css({"height":windowWidth*0.5,"margin-top":(windowHeight-windowWidth)*0.4+"px"});
 		$("#slide_wrapper").css({"left":windowWidth*0.10} );
@@ -282,8 +289,9 @@ var slide = {
 		$(".navi_box").css({"height":windowHeight*0.18})
 		$("#navi_wrapper").css({"left":windowWidth*(5/12),"height":windowWidth*(5/36),"margin-top":windowHeight*0.02});
 		$("#navi_wrapper li").css({"width":windowWidth*(1/9),"height":windowWidth*(1/9),
-									"margin-left":windowWidth*(1/36),
-								});
+									"margin-left":windowWidth*(1/36)});
+		
+		$("#interference").css({'top':windowHeight*0.15})
 	},
 	
 };
